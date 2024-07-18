@@ -20,11 +20,6 @@ spec:
       serviceAccountName: {{ include "eks-cluster-autoscaler.serviceAccountName" . }}  # Corrected field name
       imagePullSecrets:
         - name: {{ .Release.Name }}-docker-secret  # Use your Docker image pull secret here
-         command:
-            - /cluster-autoscaler
-          args:
-             -namespace={{ .Values.autoscaling.namespace }}
-             -cloud-provider=aws
       containers:
         - name: {{ .Chart.Name }}
           image: {{ .Values.image }}
