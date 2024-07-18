@@ -1,0 +1,9 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  namespace: {{ .Values.autoscaling.namespace }}
+  name: node-listing-role
+rules:
+- apiGroups: [""]
+  resources: ["nodes"]
+  verbs: ["list"]

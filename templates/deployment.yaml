@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "eks-cluster-autoscaler.fullname" . }}
+  namespace: {{ .Values.autoscaling.namespace }}
+  labels:
+    {{- include "eks-cluster-autoscaler.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "eks-cluster-autoscaler.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "eks-cluster-autoscaler.selectorLabels" . | nindent 8 }}
+      annotations:
+        {{- toYaml .Values.podAnnotations | nindent 8 }}
+    spec:
+      serviceAccountName: {{ include "eks-cluster-autoscaler.serviceAccountName" . }}  # Corrected field name
+      imagePullSecrets:
+        - name: {{ .Release.Name }}-docker-secret  # Use your Docker image pull secret here
+         command:
+            - /cluster-autoscaler
+          args:
+             -namespace={{ .Values.autoscaling.namespace }}
+             -cloud-provider=aws
+      containers:
+        - name: {{ .Chart.Name }}
+          image: {{ .Values.image }}
+          imagePullPolicy: {{ .Values.pullPolicy }}
+          env:
+            - name: KAFKA_BROKER_ADDRESSES
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Release.Name }}-kafka-config
+                  key: KAFKA_BROKER_ADDRESSES
+            - name: KAFKA_TOPIC
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Release.Name }}-kafka-config
+                  key: KAFKA_TOPIC
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          livenessProbe:
+            httpGet:
+              path: /liveness
+              port: 8080
+            initialDelaySeconds: 15
+            periodSeconds: 20
+          readinessProbe:
+            httpGet:
+              path: /readiness
+              port: 8080
+            initialDelaySeconds: 5
+            periodSeconds: 10

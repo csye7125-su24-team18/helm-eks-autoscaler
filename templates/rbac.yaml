@@ -1,0 +1,14 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: eks-autoscalar-node-listing-binding
+  namespace: {{ .Values.autoscaling.namespace }}
+subjects:
+- kind: ServiceAccount
+  name: eks-autoscalar
+  namespace: autoscaler
+roleRef:
+  kind: Role
+  name: node-listing-role
+  apiGroup: rbac.authorization.k8s.io
+
