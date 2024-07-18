@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "eks-cluster-autoscaler.fullname" . }}
+  namespace: {{ .Values.autoscaling.namespace }}
+  labels:
+    {{- include "eks-cluster-autoscaler.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.service.type }}  # Choose appropriate service type (e.g., ClusterIP, NodePort)
+  ports:
+    - port: {{ .Values.service.port }}  # Port exposed by the service
+      targetPort: http  # Port on pods the service forwards to
+      protocol: TCP  # Protocol used (TCP/UDP)
+      name: http  # Name of the port
+  selector:
+    {{- include "eks-cluster-autoscaler.selectorLabels" . | nindent 4 }}
+
