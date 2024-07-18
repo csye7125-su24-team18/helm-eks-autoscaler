@@ -15,14 +15,25 @@ autoscaling:
 # # Image configuration for Autoscaler
 # image: hsa404/eksautoscalar:v1.20.0
 # pullPolicy: Always
+ 
+# Service configuration
+service:
+  port: 8080
+  type: ClusterIP
+
+# Image configuration for Autoscaler
+image: hsa404/eksautoscalar:v1.20.0
+pullPolicy: Always
+
 
 # HorizontalPodAutoscaler configuration
 hpa:
-  enabled: true
+  enabled: value
   minReplicas: 2
   maxReplicas: 10
   targetCPUUtilizationPercentage: 50
   targetMemoryUtilizationPercentage: 60
+
 
 # kafka:
 #   brokers:
@@ -30,7 +41,6 @@ hpa:
 #     - "kafka-controller-1.kafka-controller-headless.kafka.svc.cluster.local:9092"
 #     - "kafka-controller-2.kafka-controller-headless.kafka.svc.cluster.local:9092"
 #   topic: "cve"
-
 #   # Service Account configuration
 # serviceAccount:
 #   name: eks-autoscalar
@@ -39,4 +49,3 @@ hpa:
 #   fullnameOverride: "my-app-service-account"  # Optionally override the full name
 #   # annotations: {}  # Optionally add annotations to the service account
 #   automount: true  # Adjust automount setting as needed
-
