@@ -30,6 +30,9 @@ rules:
       - "persistentvolumeclaims"
       - "persistentvolumes"
     verbs: ["watch", "list", "get"]
+  - apiGroups: [""]
+    resources: ["namespaces"]
+    verbs: ["watch", "list", "get"]
   - apiGroups: ["extensions"]
     resources: ["replicasets", "daemonsets"]
     verbs: ["watch", "list", "get"]
@@ -40,7 +43,7 @@ rules:
     resources: ["statefulsets", "replicasets", "daemonsets"]
     verbs: ["watch", "list", "get"]
   - apiGroups: ["storage.k8s.io"]
-    resources: ["storageclasses", "csinodes"]
+    resources: ["storageclasses", "csinodes", "csidrivers", "csistoragecapacities"]
     verbs: ["watch", "list", "get"]
   - apiGroups: ["batch", "extensions"]
     resources: ["jobs"]
@@ -52,4 +55,6 @@ rules:
     resourceNames: ["cluster-autoscaler"]
     resources: ["leases"]
     verbs: ["get", "update"]
-
+  - apiGroups: [""]
+    resources: ["configmaps"]
+    verbs: ["get", "list", "watch", "update", "create"]
