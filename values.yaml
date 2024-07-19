@@ -1,51 +1,19 @@
 # Values for EKS Cluster Autoscaler
 autoscaling:
-  # enabled: true
-  # minReplicas: 2
-  # maxReplicas: 10
-  # targetCPUUtilizationPercentage: 50
-  # targetMemoryUtilizationPercentage: 60
-  namespace: autoscaler
- 
-# # Service configuration
-# service:
-#   port: 8080
-#   type: ClusterIP
+  namespace: <value>
+  image: <value>
 
-# # Image configuration for Autoscaler
-# image: hsa404/eksautoscalar:v1.20.0
-# pullPolicy: Always
  
 # Service configuration
 service:
-  port: 8080
-  type: ClusterIP
-
-# Image configuration for Autoscaler
-image: hsa404/eksautoscalar:v1.20.0
-pullPolicy: Always
+  port: value
+  type: value
 
 
 # HorizontalPodAutoscaler configuration
 hpa:
   enabled: value
-  minReplicas: 2
-  maxReplicas: 10
-  targetCPUUtilizationPercentage: 50
-  targetMemoryUtilizationPercentage: 60
-
-
-# kafka:
-#   brokers:
-#     - "kafka-controller-0.kafka-controller-headless.kafka.svc.cluster.local:9092"
-#     - "kafka-controller-1.kafka-controller-headless.kafka.svc.cluster.local:9092"
-#     - "kafka-controller-2.kafka-controller-headless.kafka.svc.cluster.local:9092"
-#   topic: "cve"
-#   # Service Account configuration
-# serviceAccount:
-#   name: eks-autoscalar
-#   create: true
-#   nameOverride: "customer-service-account"  # Optionally override the default name
-#   fullnameOverride: "my-app-service-account"  # Optionally override the full name
-#   # annotations: {}  # Optionally add annotations to the service account
-#   automount: true  # Adjust automount setting as needed
+  minReplicas: value
+  maxReplicas: value
+  targetCPUUtilizationPercentage: value
+  targetMemoryUtilizationPercentage: value
