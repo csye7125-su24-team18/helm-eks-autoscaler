@@ -18,8 +18,10 @@ spec:
         cluster-autoscaler.kubernetes.io/safe-to-evict: 'false'
     spec:
       serviceAccountName: cluster-autoscaler
+      imagePullSecrets:
+        - name: {{.Release.Name}}-docker-secret
       containers:
-        - image: k8s.gcr.io/autoscaling/cluster-autoscaler:v1.26.2
+        - image: {{ .Values.autoscaling.image }}
           name: cluster-autoscaler
           resources:
             limits:
