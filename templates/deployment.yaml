@@ -19,7 +19,7 @@ spec:
     spec:
       serviceAccountName: cluster-autoscaler
       containers:
-        - image: k8s.gcr.io/autoscaling/cluster-autoscaler:v1.29
+        - image: k8s.gcr.io/autoscaling/cluster-autoscaler:v1.26.2
           name: cluster-autoscaler
           resources:
             limits:
@@ -39,6 +39,13 @@ spec:
             - --node-group-auto-discovery=asg:tag=k8s.io/cluster-autoscaler/enabled,k8s.io/cluster-autoscaler/dev-cluster # Update cluster
             - --balance-similar-node-groups
             - --skip-nodes-with-system-pods=false
+          env:
+            - name: AWS_REGION
+              value: {{ .Values.deployment.awsRegion }}
+            - name: AWS_ACCESS_KEY_ID
+              value: {{.Values.deployment.AWS_ACCESS_KEY_ID}}
+            - name: AWS_SECRET_ACCESS_KEY
+              value: {{.Values.deployment.AWS_SECRET_ACCESS_KEY}}
           volumeMounts:
             - name: ssl-certs
               mountPath: /etc/ssl/certs/ca-certificates.crt #/etc/ssl/certs/ca-bundle.crt for Amazon Linux Worker Nodes
@@ -47,4 +54,4 @@ spec:
       volumes:
         - name: ssl-certs
           hostPath:
-            path: "/etc/ssl/certs/ca-bundle.crt
+            path: "/etc/ssl/certs/ca-bundle.crt" #/etc/ssl/certs/ca-bundle.crt for Amazon Linux Worker Nodes
